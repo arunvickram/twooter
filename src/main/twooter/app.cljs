@@ -7,7 +7,7 @@
             [re-frame.core :as rf]
             ["react-native" :as rn]
             [reagent.core :as r]
-            ["native-base" :refer [NativeBaseProvider Avatar Input Fab] :as nb]
+            ["native-base" :refer [NativeBaseProvider Button Box Avatar Input Fab TextArea] :as nb]
             ["@react-navigation/bottom-tabs" :as rnbt]
             ["@react-navigation/native" :as rnn]
             ["@react-navigation/native-stack" :as rnn-stack]))
@@ -120,6 +120,7 @@
             :shadow 2
             :size "sm"
             :background-color "primary.500"
+            :onPress #(props.navigation.navigate "Compose Twoot")
             :icon (FontAwesome5Icon {:name "feather-alt"
                                      :color "white"
                                      :size "sm"})}]
@@ -144,46 +145,59 @@
    [:> StatusBar {:style "auto"}]])
 
 (defn SearchBar [props]
-  (r/as-element [:> Input {:w "250"
+  (r/as-element [:> Input {:maxW "250"
                            :InputLeftElement (FontAwesomeIcon {:name "search"})
                            :variant "rounded"
                            :size "lg"
                            :mx "auto"
                            :placeholder "Search Twooter"}]))
 
-(defn tabs []
-  [:> Tab.Navigator {:initialRouteName "Feed"
-                         :screenOptions {:tabBarActiveTintColor "primary.500"}}
-       [:> Tab.Screen {:name "Feed"
-                       :component (fn [props] (r/as-element [feed-page props]))
-                       :options {:tabBarShowLabel false
-                                 :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "home" :size "xl" :color (.-color props)}))}}]
-       [:> Tab.Screen {:name "Search"
-                       :component (fn [props] (r/as-element [search-page props]))
-                       :options {:tabBarShowLabel false
-                                 :headerLeft (fn [^js props] (r/as-element [:> Avatar {:source {:uri "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"}
-                                                                                      :size "sm"
-                                                                                      :ml 5
-                                                                                      :mr 2}]))
-                                 :headerTitle (fn [^js props] (r/as-element [:> Input {:w "250"
-                                                                                      :variant "rounded"
-                                                                                      :InputLeftElement (FontAwesomeIcon {:name "search" :ml 3})
-                                                                                      :size "lg"
-                                                                                      :mx "auto"
-                                                                                      :placeholder "Search Twooter"}]))
-                                 :headerRight (fn [^js props] (FontAwesomeIcon {:name "gear" :size "lg" :mr 5}))
-                                 :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "search" :size "xl" :color (.-color props)}))}}]
-       [:> Tab.Screen {:name "Notifications"
-                       :component (fn [props] (r/as-element [feed-page props]))
-                       :options {:tabBarShowLabel false
-                                 :tabBarBadge 3
-                                 :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "bell" :size "xl" :color (.-color props)}))}}]
-       [:> Tab.Screen {:name "Profile"
-                       :component (fn [props] (r/as-element [feed-page props]))
-                       :options {:tabBarShowLabel false
-                                 :tabBarIcon (fn [^js props] (r/as-element [:> Avatar {:source {:uri "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"}
-                                                                                      :size "sm"}]))}}]
-       ])
+
+(defn draft-tweet []
+  [:> Box
+   [:> TextArea {:placeholder "Compose your twoot here"
+                 :size "lg"
+                 :w "100%"
+                 :h "200"}]])
+
+(defn MainTabs []
+  [:> Tab.Navigator {:screenOptions {:tabBarActiveTintColor "primary.500"}}
+   [:> Tab.Screen {:name "Feed"
+                   :component (fn [props] (r/as-element [feed-page props]))
+                   :options {:tabBarShowLabel false
+                             :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "home" :size "xl" :color (.-color props)}))}}]
+   [:> Tab.Screen {:name "Search"
+                   :component (fn [props] (r/as-element [search-page props]))
+                   :options {:tabBarShowLabel false
+                             :headerLeft (fn [^js props] (r/as-element [:> Avatar {:source {:uri "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"}
+                                                                                  :size "sm"
+                                                                                  :ml 5
+                                                                                  :mr 2}]))
+                             :headerTitle (fn [^js props] (r/as-element [:> Input {:w "250"
+                                                                                  :variant "rounded"
+                                                                                  :InputLeftElement (FontAwesomeIcon {:name "search" :ml 3})
+                                                                                  :size "lg"
+                                                                                  :mx "auto"
+                                                                                  :placeholder "Search Twooter"}]))
+                             :headerRight (fn [^js props] (FontAwesomeIcon {:name "gear" :size "lg" :mr 5}))
+                             :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "search" :size "xl" :color (.-color props)}))}}]
+   [:> Tab.Screen {:name "Notifications"
+                   :component (fn [props] (r/as-element [feed-page props]))
+                   :options {:tabBarShowLabel false
+                             :tabBarBadge 3
+                             :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "bell" :size "xl" :color (.-color props)}))}}]
+   [:> Tab.Screen {:name "Profile"
+                   :component (fn [props] (r/as-element [feed-page props]))
+                   :options {:tabBarShowLabel false
+                             :tabBarIcon (fn [^js props] (r/as-element [:> Avatar {:source {:uri "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"}
+                                                                                  :size "sm"}]))}}]])
+
+(def MainTabsR (r/reactify-component MainTabs))
+
+(defn CancelButton [props]
+  [:> Button {:variant "ghost"
+              :color "coolGray.50"}
+   "Cancel"])
 
 (defn root []
   ;; The save and restore of the navigation root state is for development time bliss
@@ -199,49 +213,46 @@
       [:> Stack.Navigator
        [:> Stack.Group
         [:> Stack.Screen {:name "Tabs"
-                          :component (fn [^js props] (r/as-element [tabs props]))
+                          :component MainTabsR
                           :options {:headerShown false}}]]
-
+       [:> Stack.Group {:screenOptions {:presentation "modal"}}
+        [:> Stack.Screen {:name "Compose Twoot"
+                          :component (fn [^js props] (r/as-element [draft-tweet props]))
+                          :options {:headerLeft (fn [props] (r/as-element [CancelButton props]))
+                                    :headerRight (fn [props] (r/as-element [:> Button {:color "primary.500" :borderRadius "100%" :px 4} "Twoot"]))}}]]
        ]
       #_[:> Tab.Navigator {:initialRouteName "Feed"
-                         :screenOptions {:tabBarActiveTintColor "primary.500"}}
-       [:> Tab.Screen {:name "Feed"
-                       :component (fn [props] (r/as-element [feed-page props]))
-                       :options {:tabBarShowLabel false
-                                 :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "home" :size "xl" :color (.-color props)}))}}]
-       [:> Tab.Screen {:name "Search"
-                       :component (fn [props] (r/as-element [search-page props]))
-                       :options {:tabBarShowLabel false
-                                 :headerLeft (fn [^js props] (r/as-element [:> Avatar {:source {:uri "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"}
-                                                                                      :size "sm"
-                                                                                      :ml 5
-                                                                                      :mr 2}]))
-                                 :headerTitle (fn [^js props] (r/as-element [:> Input {:w "250"
-                                                                                      :variant "rounded"
-                                                                                      :InputLeftElement (FontAwesomeIcon {:name "search" :ml 3})
-                                                                                      :size "lg"
-                                                                                      :mx "auto"
-                                                                                      :placeholder "Search Twooter"}]))
-                                 :headerRight (fn [^js props] (FontAwesomeIcon {:name "gear" :size "lg" :mr 5}))
-                                 :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "search" :size "xl" :color (.-color props)}))}}]
-       [:> Tab.Screen {:name "Notifications"
-                       :component (fn [props] (r/as-element [feed-page props]))
-                       :options {:tabBarShowLabel false
-                                 :tabBarBadge 3
-                                 :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "bell" :size "xl" :color (.-color props)}))}}]
-       [:> Tab.Screen {:name "Profile"
-                       :component (fn [props] (r/as-element [feed-page props]))
-                       :options {:tabBarShowLabel false
-                                 :tabBarIcon (fn [^js props] (r/as-element [:> Avatar {:source {:uri "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"}
-                                                                                      :size "sm"}]))}}]
-       ]
-      #_[:> Stack.Navigator
-         [:> Stack.Screen {:name "Home"
-                           :component (fn [props] (r/as-element [home props]))
-                           :options {:title "Twooter.App"}}]
-         [:> Stack.Screen {:name "About"
-                           :component (fn [props] (r/as-element [about props]))
-                           :options {:title "About"}}]]]]))
+                           :screenOptions {:tabBarActiveTintColor "primary.500"}}
+         [:> Tab.Screen {:name "Feed"
+                         :component (fn [props] (r/as-element [feed-page props]))
+                         :options {:tabBarShowLabel false
+                                   :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "home" :size "xl" :color (.-color props)}))}}]
+         [:> Tab.Screen {:name "Search"
+                         :component (fn [props] (r/as-element [search-page props]))
+                         :options {:tabBarShowLabel false
+                                   :headerLeft (fn [^js props] (r/as-element [:> Avatar {:source {:uri "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"}
+                                                                                        :size "sm"
+                                                                                        :ml 5
+                                                                                        :mr 2}]))
+                                   :headerTitle (fn [^js props] (r/as-element [:> Input {:w "250"
+                                                                                        :variant "rounded"
+                                                                                        :InputLeftElement (FontAwesomeIcon {:name "search" :ml 3})
+                                                                                        :size "lg"
+                                                                                        :mx "auto"
+                                                                                        :placeholder "Search Twooter"}]))
+                                   :headerRight (fn [^js props] (FontAwesomeIcon {:name "gear" :size "lg" :mr 5}))
+                                   :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "search" :size "xl" :color (.-color props)}))}}]
+         [:> Tab.Screen {:name "Notifications"
+                         :component (fn [props] (r/as-element [feed-page props]))
+                         :options {:tabBarShowLabel false
+                                   :tabBarBadge 3
+                                   :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "bell" :size "xl" :color (.-color props)}))}}]
+         [:> Tab.Screen {:name "Profile"
+                         :component (fn [props] (r/as-element [feed-page props]))
+                         :options {:tabBarShowLabel false
+                                   :tabBarIcon (fn [^js props] (r/as-element [:> Avatar {:source {:uri "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"}
+                                                                                        :size "sm"}]))}}]
+         ]]]))
 
 (defn start
   {:dev/after-load true}

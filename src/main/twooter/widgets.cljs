@@ -1,7 +1,7 @@
 (ns twooter.widgets
   (:require ["react-native" :as rn]
             [reagent.core :as r]
-            ["@expo/vector-icons" :refer [Ionicons FontAwesome]]
+            ["@expo/vector-icons" :refer [Ionicons FontAwesome FontAwesome5]]
             ["native-base" :refer [Avatar Box Text HStack VStack Button Icon]]))
 
 (defn ExpoIcon [props]
@@ -9,6 +9,9 @@
 
 (defn FontAwesomeIcon [props]
   (r/as-element [:> Icon (merge props {:as FontAwesome})]))
+
+(defn FontAwesome5Icon [props]
+  (r/as-element [:> Icon (merge props {:as FontAwesome5})]))
 
 (defn flat-list [props]
   [:> rn/FlatList props #_(merge props {:data (:data props)

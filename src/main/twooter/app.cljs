@@ -1,13 +1,13 @@
 (ns twooter.app
   (:require [twooter.events]
             [twooter.subs]
-            [twooter.widgets :refer [button twoot FontAwesomeIcon flat-list]]
+            [twooter.widgets :refer [button twoot FontAwesomeIcon FontAwesome5Icon flat-list]]
             [expo.root :as expo-root]
             ["expo-status-bar" :refer [StatusBar]]
             [re-frame.core :as rf]
             ["react-native" :as rn]
             [reagent.core :as r]
-            ["native-base" :refer [NativeBaseProvider Avatar Input]]
+            ["native-base" :refer [NativeBaseProvider Avatar Input Fab]]
             ["@react-navigation/bottom-tabs" :as rnbt]
             ["@react-navigation/native" :as rnn]
             ["@react-navigation/native-stack" :as rnn-stack]))
@@ -58,46 +58,45 @@
        "Using: shadow-cljs+expo+reagent+re-frame"]]
      [:> StatusBar {:style "auto"}]]))
 
+(defonce DATA
+  [{:id 1
+    :author (str "@" "hello")
+    :author-display "Amy"
+    :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+    :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
+   {:id 2
+    :author (str "@" "hello")
+    :author-display "Amy"
+    :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+    :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
+   {:id 3
+    :author (str "@" "hello")
+    :author-display "Amy"
+    :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+    :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
+   {:id 4
+    :author (str "@" "hello")
+    :author-display "Amy"
+    :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+    :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}])
+
 (defn feed-page [^js props]
   [:> rn/View {:style {:flex 1
                        :padding-horizontal 20
                        :justify-content :space-between
                        :align-items :flex-start
                        :background-color :white}}
-
-
    [:> rn/View {:style {:align-items :flex-start}}
-    [:> rn/FlatList {:data [{:id 1
-                             :author (str "@" "hello")
-                             :author-display "Amy"
-                             :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                             :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
-                            {:id 2
-                             :author (str "@" "hello")
-                             :author-display "Amy"
-                             :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                             :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
-                            {:id 3
-                             :author (str "@" "hello")
-                             :author-display "Amy"
-                             :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                             :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}
-                            {:id 4
-                             :author (str "@" "hello")
-                             :author-display "Amy"
-                             :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-                             :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}]
+    [:> rn/FlatList {:data DATA
                      :keyExtractor (fn [data] (.-id data))
                      :renderItem (fn [twoot-data]
-                                   (r/as-element [twoot (:item (js->clj twoot-data {:keywordize-keys true}))]))}]
-    #_#_[twoot {:author (str "@" "hello")
-            :author-display "Amy"
-            :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}]
-    [twoot {:author (str "@" "hello")
-            :author-display "Amy"
-            :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
-            :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}]]
+                                   (r/as-element [twoot (:item (js->clj twoot-data {:keywordize-keys true}))]))}]]
+   [:> Fab {:renderInPortal false
+            :shadow 2
+            :size "sm"
+            :icon (FontAwesome5Icon {:name "feather-alt"
+                                     :color "white"
+                                     :size "sm"})}]
    [:> StatusBar {:style "auto"}]])
 
 (defn search-page [^js props]

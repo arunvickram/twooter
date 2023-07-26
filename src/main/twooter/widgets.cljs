@@ -10,7 +10,13 @@
 (defn FontAwesomeIcon [props]
   (r/as-element [:> Icon (merge props {:as FontAwesome})]))
 
-(defn twoot [{:keys [text
+(defn flat-list [props]
+  [:> rn/FlatList props #_(merge props {:data (:data props)
+                                :renderItem (fn [^js props'] (r/as-element ((:render-item props) (js->clj props'))))
+                                :keyExtractor (fn [^js props'] (r/as-element ((:key-extractor props) (js->clj props'))))})])
+
+(defn twoot [{:keys [id
+                     text
                      author
                      author-pfp
                      author-display]}]

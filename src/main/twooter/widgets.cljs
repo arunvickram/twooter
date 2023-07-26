@@ -22,7 +22,10 @@
                      text
                      author
                      author-pfp
-                     author-display]}]
+                     author-display
+                     like-count
+                     reply-count
+                     retwoot-count]}]
   [:> Box {:borderColor "coolGray.200"
            :px "6"
            :py "2"
@@ -36,14 +39,16 @@
     [:> Text text]
     [:> HStack {:space 3}
      [:> Button {:variant "ghost"
+                 :color "primary.500"
                  :leftIcon (ExpoIcon {:as FontAwesome :name "reply" :size "xs"})}
-      "2"]
+      (str reply-count)]
      [:> Button {:variant "ghost"
+                 :color "primary.500"
                  :leftIcon (ExpoIcon {:as FontAwesome :name "retweet" :size "xs"})}
-      "100"]
+      (str retwoot-count)]
      [:> Button {:variant "ghost"
                  :leftIcon (ExpoIcon {:as FontAwesome :name "heart" :size "xs"})}
-      "5,124"]]]])
+      (str like-count)]]]])
 
 (defn button [{:keys [style text-style on-press
                       disabled? disabled-style disabled-text-style]

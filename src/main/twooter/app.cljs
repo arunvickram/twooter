@@ -7,7 +7,7 @@
             [re-frame.core :as rf]
             ["react-native" :as rn]
             [reagent.core :as r]
-            ["native-base" :refer [NativeBaseProvider Avatar]]
+            ["native-base" :refer [NativeBaseProvider Avatar Input]]
             ["@react-navigation/bottom-tabs" :as rnbt]
             ["@react-navigation/native" :as rnn]
             ["@react-navigation/native-stack" :as rnn-stack]))
@@ -76,6 +76,24 @@
             :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}]]
    [:> StatusBar {:style "auto"}]])
 
+(defn search-page [^js props]
+  [:> rn/View {:style {:flex 1
+                       :padding-vertical 50
+                       :padding-horizontal 20
+                       :justify-content :space-between
+                       :align-items :flex-start
+                       :background-color :white}}
+   [:> rn/View {:style {:align-items :flex-start}}
+    [twoot {:author (str "@" "hello")
+            :author-display "Amy"
+            :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+            :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}]
+    [twoot {:author (str "@" "hello")
+            :author-display "Amy"
+            :author-pfp "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+            :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}]]
+   [:> StatusBar {:style "auto"}]])
+
 (defn- about 
   []
   (r/with-let [counter (rf/subscribe [:get-counter])]
@@ -103,6 +121,14 @@
      [:> StatusBar {:style "auto"}]]))
 
 
+(defn SearchBar [props]
+  (r/as-element [:> Input {:w "250"
+                           :InputLeftElement (FontAwesomeIcon {:name "search"})
+                           :variant "rounded"
+                           :size "lg"
+                           :mx "auto"
+                           :placeholder "Search Twooter"}]))
+
 (defn root []
   ;; The save and restore of the navigation root state is for development time bliss
   (r/with-let [!root-state (rf/subscribe [:navigation/root-state])
@@ -122,8 +148,19 @@
                        :options {:tabBarShowLabel false
                                  :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "home" :size "xl" :color (.-color props)}))}}]
        [:> Tab.Screen {:name "Search"
-                       :component (fn [props] (r/as-element [feed-page props]))
+                       :component (fn [props] (r/as-element [search-page props]))
                        :options {:tabBarShowLabel false
+                                 :headerLeft (fn [^js props] (r/as-element [:> Avatar {:source {:uri "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"}
+                                                                                      :size "sm"
+                                                                                      :ml 5
+                                                                                      :mr 2}]))
+                                 :headerTitle (fn [^js props] (r/as-element [:> Input {:w "250"
+                                                                                      :variant "rounded"
+                                                                                      :InputLeftElement (FontAwesomeIcon {:name "search" :ml 3})
+                                                                                      :size "lg"
+                                                                                      :mx "auto"
+                                                                                      :placeholder "Search Twooter"}]))
+                                 :headerRight (fn [^js props] (FontAwesomeIcon {:name "gear" :size "lg" :mr 5}))
                                  :tabBarIcon (fn [^js props] (FontAwesomeIcon {:name "search" :size "xl" :color (.-color props)}))}}]
        [:> Tab.Screen {:name "Notifications"
                        :component (fn [props] (r/as-element [feed-page props]))

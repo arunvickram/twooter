@@ -196,7 +196,8 @@
 
 (defn CancelButton [^js props]
   [:> Button {:variant "ghost"
-              :color "coolGray.50"}
+              :color "coolGray.50"
+              :onPress #(props.navigation.goBack)}
    "Cancel"])
 
 (defn root []
@@ -219,8 +220,11 @@
         [:> Stack.Screen {:name "Compose Twoot"
                           :component (fn [^js props] (r/as-element [draft-tweet props]))
                           :options (fn [^js screenProps]
-                                     {:headerLeft (fn [props] (r/as-element [CancelButton screenProps]))
-                                    :headerRight (fn [props] (r/as-element [:> Button {:color "primary.500" :borderRadius "100%" :px 4} "Twoot"]))})}]]
+                                     #js{"headerLeft" (fn [props] (r/as-element [CancelButton screenProps]))
+                                         "headerRight" (fn [props] (r/as-element [:> Button {:color "primary.500"
+                                                                                            :borderRadius "100%"
+                                                                                            :px 4}
+                                                                                 "Twoot"]))})}]]
        ]
       #_[:> Tab.Navigator {:initialRouteName "Feed"
                            :screenOptions {:tabBarActiveTintColor "primary.500"}}

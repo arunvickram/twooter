@@ -9,23 +9,31 @@
     "release": "npx shadow-cljs release app",
     "eject": "npx expo eject",
     "eas-build-pre-install": "bash eas-build-pre-install.sh",
-    "eas-build-post-install": "npx shadow-cljs release app"
+    "eas-build-post-install": "npx shadow-cljs release app",
+    "postinstall": "patch-package"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
+    "@react-navigation/bottom-tabs": "^6.5.8",
+    "@react-navigation/drawer": "^6.6.3",
     "@react-navigation/native": "^6.1.6",
-    "@react-navigation/native-stack": "^6.9.12",
+    "@react-navigation/native-stack": "^6.9.13",
+    "@react-navigation/stack": "^6.3.17",
     "create-react-class": "^15.7.0",
     "expo": "^48.0.19",
     "expo-cli": "^6.3.8",
     "expo-status-bar": "^1.4.4",
+    "native-base": "^3.4.28",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "^0.71.8",
     "react-native-safe-area-context": "4.5.0",
     "react-native-screens": "~3.20.0",
+    "react-native-svg": "13.4.0",
     "react-native-web": "^0.18.12"
   },
   "devDependencies": {
+    "patch-package": "^7.0.2",
     "shadow-cljs": "^2.23.3"
   },
   "private": true

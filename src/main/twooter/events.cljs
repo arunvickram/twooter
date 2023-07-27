@@ -23,6 +23,17 @@
  (fn [db [_ navigation-root-state]]
    (assoc-in db [:navigation :root-state] navigation-root-state)))
 
+(rf/reg-event-db :assoc-in
+  (fn [app-db [_ app-db-path v]]
+    (assoc-in app-db app-db-path v)))
+
+(rf/reg-event-db :dissoc-in
+  (fn [app-db [_ app-db-path ks]]
+    (assert (seqable? ks))
+    (update-in app-db app-db-path
+      (fn [v]
+        (apply dissoc v ks)))))
+
 (rf/reg-event-fx
  :fetch-tweets
  standard-interceptors

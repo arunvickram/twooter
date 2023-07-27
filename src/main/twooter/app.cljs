@@ -106,25 +106,26 @@
     :text "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}])
 
 (defn feed-page [^js props]
-  [:> rn/View {:style {:flex 1
-                       :padding-horizontal 20
-                       :justify-content :space-between
-                       :align-items :flex-start
-                       :background-color :white}}
-   [:> rn/View {:style {:align-items :flex-start}}
-    [:> rn/FlatList {:data DATA
-                     :keyExtractor (fn [data] (.-id data))
-                     :renderItem (fn [twoot-data]
-                                   (r/as-element [twoot (:item (js->clj twoot-data {:keywordize-keys true}))]))}]]
-   [:> Fab {:renderInPortal false
-            :shadow 2
-            :size "sm"
-            :background-color "primary.500"
-            :onPress #(props.navigation.navigate "Compose Twoot")
-            :icon (FontAwesome5Icon {:name "feather-alt"
-                                     :color "white"
-                                     :size "sm"})}]
-   [:> StatusBar {:style "auto"}]])
+  (r/with-let [tweets (rf/subscribe [:tweets])]
+    [:> rn/View {:style {:flex 1
+                         :padding-horizontal 20
+                         :justify-content :space-between
+                         :align-items :flex-start
+                         :background-color :white}}
+     [:> rn/View {:style {:align-items :flex-start}}
+      [:> rn/FlatList {:data DATA
+                       :keyExtractor (fn [data] (.-id data))
+                       :renderItem (fn [twoot-data]
+                                     (r/as-element [twoot (:item (js->clj twoot-data {:keywordize-keys true}))]))}]]
+     [:> Fab {:renderInPortal false
+              :shadow 2
+              :size "sm"
+              :background-color "primary.500"
+              :onPress #(props.navigation.navigate "Compose Twoot")
+              :icon (FontAwesome5Icon {:name "feather-alt"
+                                       :color "white"
+                                       :size "sm"})}]
+     [:> StatusBar {:style "auto"}]]))
 
 (defn search-page [^js props]
   [:> rn/View {:style {:flex 1
